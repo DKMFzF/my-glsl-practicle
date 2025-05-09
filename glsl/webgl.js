@@ -4,7 +4,9 @@ const canvas = document.querySelector('#glshader');
 const gl = canvas.getContext('webgl');
 
 // path on select folder-shader
-const pathToTargetFolder = 'bg_color';
+
+const pathToTargetFolder = 'pulsar_bg_color'; // !select any folder in glsl/ to run the script!
+
 const pathFragmentShader = `./glsl/${pathToTargetFolder}/fragment.glsl`;
 const pathVertexShader = `./glsl/${pathToTargetFolder}/vertex.glsl`;
 

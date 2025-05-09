@@ -1,6 +1,11 @@
 // file for position vertex in space (in viewport browser)
 
-attribute vec4 a_position; // this var comes from CPU 
+// using if-else for float accuracy
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+attribute vec4 a_position; // this var comes from CPU
 
 // function main starting everytime for everyone pixel in vewport
 void main() {

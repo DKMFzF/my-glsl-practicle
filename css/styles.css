@@ -3,4 +3,11 @@
   padding: 0;
 }
 
+body {
+  overflow: hidden;
+}
 
+canvas {
+  block-size: 100vh;
+  inline-size: 100vw;
+}
