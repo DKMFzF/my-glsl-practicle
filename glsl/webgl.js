@@ -1,11 +1,13 @@
 const canvas = document.querySelector('#glshader');
 
+const timeSpeed = 0.001;
+
 // added context for shader
 const gl = canvas.getContext('webgl');
 
 // path on select folder-shader
 
-const pathToTargetFolder = 'pulsar_bg_color'; // !select any folder in glsl/ to run the script!
+const pathToTargetFolder = 'bg_gradient'; // !select any folder in glsl/ to run the script!
 
 const pathFragmentShader = `./glsl/${pathToTargetFolder}/fragment.glsl`;
 const pathVertexShader = `./glsl/${pathToTargetFolder}/vertex.glsl`;
@@ -93,11 +95,13 @@ Promise.all([
 
   // search var uniform in shaders
   const uTimeLocation = gl.getUniformLocation(program, 'u_time');
+  const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution');
 
   function render(time) {
-    time *= 0.001; // using for animation
+    time *= timeSpeed; // using for animation
 
     gl.uniform1f(uTimeLocation, time); // replace state in vars uniform
+    gl.uniform2f(uResolutionLocation, gl.canvas.width, gl.canvas.height);
 
     // installation sizing for viewport
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
