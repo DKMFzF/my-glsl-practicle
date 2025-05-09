@@ -1,1 +1,1 @@
-# This is my first practicle on GLSL langue
+# This is my first practicle on GLSL language

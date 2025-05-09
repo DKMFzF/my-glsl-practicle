@@ -1,28 +1,53 @@
 const canvas = document.querySelector('#glshader');
+
+// added context for shader
 const gl = canvas.getContext('webgl');
 
+// path on select folder-shader
+const pathToTargetFolder = 'bg_color';
+const pathFragmentShader = `./glsl/${pathToTargetFolder}/fragment.glsl`;
+const pathVertexShader = `./glsl/${pathToTargetFolder}/vertex.glsl`;
+
 // create-shader
-const createShader = (gl, type, source) => {
-  const shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    console.error('Ошибка компиляции шейдера:', gl.getShaderInfoLog(shader));
-    gl.deleteShader(shader);
+// or vertext shader (VERTEX_SHADER)
+// or fragment shader (FRAGMENT_SHADER)
+const createShader = (context, type, source) => {
+  const shader = context.createShader(type);
+
+  // download source in shader context
+  context.shaderSource(shader, source);
+  
+  // compile shader
+  context.compileShader(shader);
+  
+  // check error shader
+  if (!context.getShaderParameter(shader, context.COMPILE_STATUS)) {
+    console.error('Error compile shader:', context.getShaderInfoLog(shader));
+    context.deleteShader(shader);
     return null;
   }
+
   return shader;
 }
 
+const loadShader = async (url) => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Error load shader');
+  return response.text();
+}
+
 // dowload shader file
-Promise.all(
-  [fetch('./glsl/bg_color/fragment.frag').then(res => res.text()),
-  fetch('./glsl/bg_color/shader.vert').then(res => res.text())]
-)
+Promise.all([
+  loadShader(pathFragmentShader),
+  loadShader(pathVertexShader),
+])
 .then(([fragmentShaderSource, vertexShaderSource]) => {
+
+  // init shader
   const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
   const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
 
+  // combination vertex and fragment shader 
   const program = gl.createProgram();
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
@@ -46,7 +71,8 @@ Promise.all(
      1,  1,
   ]), gl.STATIC_DRAW);
 
-  const positionLocation = gl.getAttribLocation(program, 'a_position');
+  const positionLocation = gl.getAttribLocation(program, 'a_position'); // var in file vertex.glsl -> attribute vec4 a_position
+
   gl.enableVertexAttribArray(positionLocation);
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
