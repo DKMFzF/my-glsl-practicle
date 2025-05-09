@@ -1,3 +1,10 @@
+/**
+ * the webgl x glsl starter configurator
+ * My practices are distributed under the MIT license
+ * some of the practices were taken from the book thebookofshaders
+ * book => https://thebookofshaders.com
+ */
+
 const canvas = document.querySelector('#glshader');
 
 const timeSpeed = 0.001;
@@ -7,7 +14,7 @@ const gl = canvas.getContext('webgl');
 
 // path on select folder-shader
 
-const pathToTargetFolder = 'bg_gradient'; // !select any folder in glsl/ to run the script!
+const pathToTargetFolder = 'animation_bg_gradient'; // !select any folder in glsl/ to run the script!
 
 const pathFragmentShader = `./glsl/${pathToTargetFolder}/fragment.glsl`;
 const pathVertexShader = `./glsl/${pathToTargetFolder}/vertex.glsl`;
@@ -93,15 +100,15 @@ Promise.all([
   // description format data for var positionLocation in shader
   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-  // search var uniform in shaders
-  const uTimeLocation = gl.getUniformLocation(program, 'u_time');
-  const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+  // search vars uniform in shaders
+  const uTimeLocation = gl.getUniformLocation(program, 'u_time'); // time animation
+  const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution'); // viewport sizing
 
   function render(time) {
     time *= timeSpeed; // using for animation
 
     gl.uniform1f(uTimeLocation, time); // replace state in vars uniform
-    gl.uniform2f(uResolutionLocation, gl.canvas.width, gl.canvas.height);
+    gl.uniform2f(uResolutionLocation, gl.canvas.width, gl.canvas.height); // viewport animation
 
     // installation sizing for viewport
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);

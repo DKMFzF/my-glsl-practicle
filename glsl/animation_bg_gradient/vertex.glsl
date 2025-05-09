@@ -1,5 +1,5 @@
-varying vec2 vUv;
+attribute vec4 a_position;
+
 void main() {
-    gl_Position = vec4(position, 1.0);
-    vUv = uv;
+    gl_Position = a_position;
 }
